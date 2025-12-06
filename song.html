@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎵 VIBELY</h1>
+            <div class="theme-toggle">
+                <button id="themeToggle">🌙</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+
+            <section class="upload-section">
+                <input type="file" id="fileInput" accept="audio/*" multiple>
+                <label for="fileInput" class="upload-btn">
+                    📁 Upload Music Files
+                </label>
+            </section>
+
+            <section class="search-section">
+                <input type="text" id="searchInput" placeholder="Search by title, artist, or genre...">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="rock">Rock</button>
+                    <button class="filter-btn" data-filter="pop">Pop</button>
+                    <button class="filter-btn" data-filter="jazz">Jazz</button>
+                    <button class="filter-btn" data-filter="classical">Classical</button>
+                </div>
+            </section>
+
+            <section class="player-section">
+                <div class="now-playing">
+                    <div class="track-info">
+                        <div class="track-title">No track selected</div>
+                        <div class="track-artist">Select a song to play</div>
+                    </div>
+                    <div class="track-time">
+                        <span id="currentTime">0:00</span>
+                        <span id="totalTime">0:00</span>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="control-btn" id="prevBtn">⏮️</button>
+                    <button class="control-btn play-pause" id="playPauseBtn">▶️</button>
+                    <button class="control-btn" id="nextBtn">⏭️</button>
+                    <button class="control-btn" id="shuffleBtn">🔀</button>
+                    <button class="control-btn" id="repeatBtn">🔁</button>
+                </div>
+
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                </div>
+            </section>
+
+            <section class="playlist-section">
+                <div class="playlist-header">
+                    <h2>Playlist</h2>
+                    <div class="playlist-actions">
+                        <button id="createPlaylistBtn">+ Create Playlist</button>
+                        <button id="savePlaylistBtn">💾 Save</button>
+                        <button id="loadPlaylistBtn">📁 Load</button>
+                    </div>
+                </div>
+
+                <div class="playlist-container">
+                    <div class="playlist" id="playlist"></div>
+                </div>
+            </section>
+        </main>
+
+        <audio id="audioPlayer" preload="metadata"></audio>
+
+        <div class="modal" id="playlistModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Create New Playlist</h3>
+                <input type="text" id="playlistName" placeholder="Enter playlist name">
+                <button id="confirmCreatePlaylist">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
