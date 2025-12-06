@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-tasks"></i> ProjectFlow</h1>
+            <div class="user-info">
+                <span id="current-user">John Doe</span>
+                <button id="logout-btn" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <h2>Welcome to ProjectFlow</h2>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Projects</h3>
+                <button id="create-project-btn" class="btn btn-primary btn-full">
+                    <i class="fas fa-plus"></i> New Project
+                </button>
+                <ul id="projects-list" class="projects-list"></ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Quick Actions</h3>
+                <button id="create-task-btn" class="btn btn-secondary btn-full">
+                    <i class="fas fa-plus-circle"></i> Quick Task
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Project Header -->
+            <div id="project-header" class="project-header" style="display: none;">
+                <h2 id="project-title"></h2>
+                <div class="project-actions">
+                    <button id="invite-members-btn" class="btn btn-secondary">
+                        <i class="fas fa-user-plus"></i> Invite
+                    </button>
+                    <button id="project-settings-btn" class="btn btn-secondary">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Board Container -->
+            <div id="board-container" class="board-container">
+                <div id="welcome-message" class="welcome-message">
+                    <i class="fas fa-rocket"></i>
+                    <h2>Welcome to ProjectFlow!</h2>
+                    <p>Create your first project to get started with collaborative task management.</p>
+                </div>
+
+                <div id="board" class="board" style="display: none;">
+                    <div class="column" data-status="todo">
+                        <div class="column-header">
+                            <h3><i class="fas fa-list"></i> To Do</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" data-status="todo"></div>
+                        <button class="add-task-btn" data-status="todo">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+
+                    <div class="column" data-status="in-progress">
+                        <div class="column-header">
+                            <h3><i class="fas fa-clock"></i> In Progress</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" data-status="in-progress"></div>
+                        <button class="add-task-btn" data-status="in-progress">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+
+                    <div class="column" data-status="done">
+                        <div class="column-header">
+                            <h3><i class="fas fa-check"></i> Done</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" data-status="done"></div>
+                        <button class="add-task-btn" data-status="done">
+                            <i class="fas fa-plus"></i> Add Task
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Project Modal -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="project-form">
+                <div class="form-group">
+                    <label for="project-name">Project Name:</label>
+                    <input type="text" id="project-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-description">Description:</label>
+                    <textarea id="project-description" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create/Edit Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="task-modal-title">Create New Task</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title:</label>
+                    <input type="text" id="task-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description:</label>
+                    <textarea id="task-description" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-assignee">Assignee:</label>
+                        <select id="task-assignee">
+                            <option value="">Unassigned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-priority">Priority:</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-due-date">Due Date:</label>
+                    <input type="date" id="task-due-date">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div id="task-detail-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="task-detail-title"></h3>
+                <div class="modal-actions">
+                    <button id="edit-task-btn" class="btn btn-secondary">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                    <button id="delete-task-btn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    <button class="close-modal">&times;</button>
+                </div>
+            </div>
+            <div class="task-detail-content">
+                <div class="task-detail-main">
+                    <div class="task-meta">
+                        <div class="meta-item">
+                            <strong>Status:</strong>
+                            <span id="task-detail-status"></span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Priority:</strong>
+                            <span id="task-detail-priority"></span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Assignee:</strong>
+                            <span id="task-detail-assignee"></span>
+                        </div>
+                        <div class="meta-item">
+                            <strong>Due Date:</strong>
+                            <span id="task-detail-due"></span>
+                        </div>
+                    </div>
+                    <div class="task-description">
+                        <h4>Description</h4>
+                        <p id="task-detail-description"></p>
+                    </div>
+                </div>
+
+                <div class="task-comments">
+                    <h4>Comments</h4>
+                    <div id="comments-list" class="comments-list"></div>
+                    <form id="comment-form" class="comment-form">
+                        <textarea id="comment-text" placeholder="Add a comment..." required></textarea>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Post
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notifications" class="notifications"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
